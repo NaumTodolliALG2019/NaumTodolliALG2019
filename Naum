@@ -1,0 +1,62 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+struct fjale{
+	int i;
+	char a;
+	string fjal;
+};
+struct liste{
+	fjale fjal;
+	liste *pas;
+};
+int main()
+{
+	char alfa[27]={'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
+	fjale T[30];
+  for (int i=0;i<30;i++)
+  {
+  	T[i].i=0;
+  }
+fstream in;
+	in.open("kot.txt");
+	if(in.is_open())
+	{
+		while(!in.eof())
+		{
+			string str;
+			in>>str;
+			int c;
+			for (int i=0;i<27;i++)
+			{
+				if(alfa[i]==str.at(0))
+				c=i;
+			}
+			int k=c%30;
+			while(k<30)
+			{
+				if(T[k].fjal==str)
+				{
+					break;
+				}
+				else if(T[k].i==1)
+				{
+					c=c+1;
+					 k=c%30;
+				}
+				else
+				{
+					T[k].i=1;
+					T[k].fjal=str;
+					T[k].a=str.at(0);
+				}
+				
+			}
+		}
+	}
+   for (int i=0;i<30;i++)
+  {
+    cout<<T[i].fjal<<" ";
+  }
+ 
