@@ -1,0 +1,99 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct fjale{
+	char a;
+	string fjal;
+};
+struct peme{
+	fjale fjal;
+	peme *majt;
+	peme *djatht;
+	peme *p;
+};
+peme *insertTree(peme *T, string s)
+{
+	peme *z=new peme;
+	z->fjal.fjal=s;
+	z->fjal.a=s.at(0);
+	z->djatht=NULL;
+	z->majt=NULL;
+	z->p=NULL;
+	peme *y = NULL;
+	peme *x = T;
+
+	while(x != NULL)
+	{
+		y = x;
+		if(z->fjal.a < x->fjal.a) x = x->majt;
+		else x = x->djatht;
+	}
+	z->p = y;
+
+	if(y==NULL)
+		T = z;
+	else if (z->fjal.a < y->fjal.a) y->majt = z;
+	else y->djatht = z;
+
+	return T;
+}
+bool Kerko(peme *T, string k)
+{
+	peme *x = T;
+
+
+	while(x != NULL ){
+		if(k==x->fjal.fjal)
+		{ 
+		return true;
+		 } 
+		else if(k.at(0)< x->fjal.fjal.at(0)) 
+		{
+			x = x->majt;
+		}
+		else x = x->djatht;	
+	}
+
+	return false;
+	
+}
+void nderRendore(peme *T)
+{
+	if(T != NULL) {
+		
+		
+		nderRendore(T->majt);
+		cout<<T->fjal.fjal<<" ";
+		nderRendore(T->djatht);
+		
+		}
+}
+int main()
+{
+	fstream in;
+	in.open("kot.txt");
+	peme *P=new peme;
+	P=NULL;
+	peme *b= new peme;
+	b=P;
+	if(in.is_open())
+	{
+		while(!in.eof())
+		{
+			string str;
+			in>>str;
+			if(Kerko(b,str)==false)
+			{
+				b=insertTree(b,str);
+			}
+		}
+	}
+
+	nderRendore(b);
+	
+	in.close();
+	return 0;
+}
